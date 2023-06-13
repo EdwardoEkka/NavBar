@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Stopwatch</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="page2">
+  <div class="navi">
+    <nav>
+    
+        <li><a href="index.html">Home</a></li>
+    
+    </nav>
+  </div>
+  
+  <h1>Stopwatch</h1>
+  <br>
+  <br>
+  <br>
+  <div class="t1">
+    
+    <button class="button" onclick="startStopwatch()">Start</button>
+    <button class="button" onclick="pauseStopwatch()">Pause</button>
+    <button class="button" onclick="resetStopwatch()">Reset</button>
+  </div>
+  <br>
+  <br>
+  <div class="ct1">
+    <div class="t1">Hours &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Minutes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Seconds</div>
+    <br>
+    <div id="timer">00&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00</div>
+  </div>
+  <script>
+    var stopwatchInterval;
+    var startTime;
+    var pausedTime = 0;
+    
+    function startStopwatch() {
+      startTime = Date.now() - pausedTime;
+      
+      stopwatchInterval = setInterval(function() {
+        var elapsedTime = Date.now() - startTime;
+        var formattedTime = formatTime(elapsedTime);
+        
+        document.getElementById("timer").textContent = formattedTime;
+      }, 10);
+    }
+    
+    function pauseStopwatch() {
+      clearInterval(stopwatchInterval);
+      pausedTime = Date.now() - startTime;
+    }
+    
+    function resetStopwatch() {
+      clearInterval(stopwatchInterval);
+      document.getElementById("timer").textContent = "00:00:00";
+      pausedTime = 0;
+    }
+    
+    function formatTime(time) {
+      var milliseconds = Math.floor((time % 1000) / 10);
+      var seconds = Math.floor((time / 1000) % 60);
+      var minutes = Math.floor((time / 1000 / 60) % 60);
+      var hours = Math.floor((time / 1000 / 60 / 60) % 24);
+      
+      return (
+        pad(hours) + "\u2003\u2003\u2003\u2003" +
+        pad(minutes) + "\u2003\u2003\u2003\u2003" +
+        pad(seconds) + "." +
+        pad(milliseconds)
+      );
+    }
+    
+    function pad(value) {
+      return String(value).padStart(2, "0");
+    }
+  </script>
+</body>
+</html>

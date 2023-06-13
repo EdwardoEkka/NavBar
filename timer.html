@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Countdown Timer</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="page3">
+  <div class="navi">
+    <nav>
+    
+        <li><a href="index.html">Home</a></li>
+    
+    </nav>
+    </div>
+    <br>
+    <br>
+    <br>
+  <h1>Set Countdown Timer</h1>
+  <table class="center">
+    <tr>
+      <th><label for="hours">Hours:&nbsp;&nbsp;&nbsp;&nbsp;</label></th>
+      <th><label for="minutes">Minutes:&nbsp;&nbsp;&nbsp;&nbsp;</label></th>
+      <th><label for="seconds">Seconds:</label></th>
+    </tr>
+    <tr>
+      <td><input class="num" type="number" id="hours" min="0" max="24" step="1" value="0"></td>
+      <td><input class="num" type="number" id="minutes" min="0" max="59" step="1" value="0"></td>
+      <td><input class="num" type="number" id="seconds" min="0" max="59" step="1" value="0"></td>
+    </tr>
+  </table>
+  <br>
+  <div class="ct">
+    <button class="button" onclick="startTimer()">Start</button>
+    <button class="button" onclick="resetTimer()">Reset</button>
+  </div>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <div class="ct1">
+    <div class="t1">Hours &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Minutes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Seconds</div>
+    <br>
+    <div id="timer">00&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00</div>
+  </div>
+  <script>
+    var countdown;
+
+    function startTimer() {
+      var hoursInput = document.getElementById("hours");
+      var minutesInput = document.getElementById("minutes");
+      var secondsInput = document.getElementById("seconds");
+
+      var hours = parseInt(hoursInput.value, 10);
+      var minutes = parseInt(minutesInput.value, 10);
+      var seconds = parseInt(secondsInput.value, 10);
+      
+      if (isNaN(hours) || isNaN(minutes) || isNaN(seconds) || hours < 0 || minutes < 0 || minutes >= 60 || seconds < 0 || seconds >= 60) {
+        alert("Please enter valid hours, minutes, and seconds.");
+        return;
+      }
+
+      var totalSeconds = (hours * 3600) + (minutes * 60) + seconds;
+      
+      var timerElement = document.getElementById("timer");
+      timerElement.textContent = formatTime(totalSeconds);
+      
+      clearInterval(countdown);
+      countdown = setInterval(function() {
+        totalSeconds--;
+        timerElement.textContent = formatTime(totalSeconds);
+        
+        if (totalSeconds <= 0) {
+          clearInterval(countdown);
+          timerElement.textContent = "Time's up!";
+        }
+      }, 1000);
+    }
+    
+    function resetTimer() {
+      clearInterval(countdown);
+      document.getElementById("timer").textContent = "\t";
+      document.getElementById("hours").value = "0";
+      document.getElementById("minutes").value = "0";
+      document.getElementById("seconds").value = "0";
+    }
+
+    function formatTime(totalSeconds) {
+      var hours = Math.floor(totalSeconds / 3600);
+      var minutes = Math.floor((totalSeconds % 3600) / 60);
+      var seconds = Math.floor(totalSeconds % 60);
+
+      return pad(hours) + "\u2003\u2003\u2003\u2003" + pad(minutes) + "\u2003\u2003\u2003\u2003" + pad(seconds);
+    }
+
+    function pad(value) {
+      return String(value).padStart(2, "0");
+    }
+  </script>
+</body>
+</html>
